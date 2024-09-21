@@ -1,0 +1,22 @@
+from . allowedMime import allowedTypes
+import random, time
+from fileUpload.uploadFile import uploadFileToDrive
+def uploadMetaFiles(files):
+  try:
+   for file in files:
+      if files[file] is None:
+         return {"error":f"{file}  is required field", "status":False}, 400
+      if files[file].content_type not in allowedTypes:
+         return {"error":f"Invalid file type for {file}", "status":False}, 400
+   docUrls={}   
+   for file in files:
+     fileName = f"{file}_{random.randint(0, 5)}_{int(time.time())}"
+     url, fileId = uploadFileToDrive(fileName, file, files[file])
+     docUrls[file] = {"url":url, "fileId": fileId}
+
+   return docUrls, 201  
+       
+  except Exception as e:
+    return {"error":"An error occurd while uploading file","e":e}, 500    
+      
+      

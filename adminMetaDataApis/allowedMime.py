@@ -1,0 +1,1 @@
+allowedTypes =['image/png', 'image/jpeg', 'application/pdf']

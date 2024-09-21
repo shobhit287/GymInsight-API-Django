@@ -3,6 +3,8 @@ from . models  import User
 from emailService.sendMailService import sendAdminUserCreateNotification
 from rest_framework.exceptions import ValidationError
 from .serializers import UserSerializer
+from adminMetaDataApis.models import AdminDocumentData
+from adminMetaDataApis.serializers import AdminDocumentDataSerializer
 from django.contrib.auth.hashers import check_password
 def createAdmin(payload):
     if payload is None:
@@ -11,6 +13,9 @@ def createAdmin(payload):
         user= UserSerializer(data=dtoToModel(payload))
         if user.is_valid():
             user.save()
+            updateStatus = AdminDocumentDataSerializer(data={'admin_id': user.data.get('user_id')})
+            if updateStatus.is_valid():
+                updateStatus.save()
             sendAdminUserCreateNotification({
                 "first_name": user.data["first_name"],
                 "last_name": user.data["last_name"],
@@ -25,7 +30,7 @@ def createAdmin(payload):
         return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
 
     except Exception as e:
-        return {"error": "An unexpected error occurred"}, status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {"error": "An unexpected error occurred","detials":e}, status.HTTP_500_INTERNAL_SERVER_ERROR
 
 def getAllAdminUsers():
     try:

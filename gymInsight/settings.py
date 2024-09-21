@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'userApis',
     'rest_framework',
     'drf_yasg',
+    'adminMetaDataApis'
 ]
 
 MIDDLEWARE = [
