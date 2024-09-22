@@ -12,8 +12,7 @@ def createUser(payload):
         if user.is_valid():
             user.save()
             sendUserCreateNotification({
-                "first_name": user.data["first_name"],
-                "last_name": user.data["last_name"],
+                "userName" : f"{user.data['first_name']} {user.data['last_name']}",
                 "email": user.data["email"],
                 "password": payload.get("password"),
             })

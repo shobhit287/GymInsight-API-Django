@@ -4,7 +4,8 @@ from .emailTemplateConfig import emailTemplateConfigs
 from .sendEmail import sendEmailNotification
 load_dotenv()
 def passwordResetSendNotification(data):
-    dynamicData= {"userName" : f"{data['first_name']} {data['last_name']}",
+    dynamicData= {
+                  "userName" : f"{data['first_name']} {data['last_name']}",
                   "email":data['email'],
                   "link" : f"{os.getenv('BASE_URL')}?token={data['token']}",
                   "subject": 'Password Reset Request'
@@ -17,28 +18,47 @@ def passwordResetSendNotification(data):
         return response
     
 def sendAdminUserCreateNotification(data):
-    dynamicData= {
-                "userName" : f"{data['first_name']} {data['last_name']}",
-                "email":data['email'],
-                "password":data['password'] ,
-                "link" : f"{os.getenv('BASE_URL')}/login",
-                "subject": 'Gym Insight Admin Credentials',
-            }
-    response = sendEmailNotification(dynamicData, emailTemplateConfigs['ADMIN_CREDENTIALS_TEMPLATE'])
+    data["link"] = f"{os.getenv('BASE_URL')}/login"
+    data["subject"] = 'Gym Insight Admin Credentials'
+    response = sendEmailNotification(data, emailTemplateConfigs['ADMIN_CREDENTIALS_TEMPLATE'])
     if response['status']:
-        print(f"admin credentials  send successfully to {dynamicData['email']}")
+        print(f"admin credentials  send successfully to {data['email']}")
 
 def sendUserCreateNotification(data):
-    dynamicData= {
-                "userName" : f"{data['first_name']} {data['last_name']}",
-                "email":data['email'],
-                "password":data['password'] ,
-                "link" : f"{os.getenv('BASE_URL')}/login",
-                "subject": 'Gym Insight User Credentials',
-            }
-    response = sendEmailNotification(dynamicData, emailTemplateConfigs['USER_CREDENTIALS_TEMPLATE'])
+    data["link"] = f"{os.getenv('BASE_URL')}/login"
+    data["subject"] = 'Gym Insight User Credentials'
+    response = sendEmailNotification(data, emailTemplateConfigs['USER_CREDENTIALS_TEMPLATE'])
     if response['status']:
-        print(f"user credentials  send successfully to {dynamicData['email']}")
+        print(f"user credentials  send successfully to {data['email']}")
+
+
+def documentApprovalRejectNotification(data):
+    data['link'] = f"{os.getenv('BASE_URL')}/gym-details/?adminId={data['id']}"
+    data['subject'] = 'Gym Insight - Gym Details Verification'
+    response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_APPROVAL_REJECT'])
+    if response['status']:
+        print(f"Gym details send successfully to super admin")
+
+def updatedDocumentApprovalRejectNotification(data):
+    data['link'] = f"{os.getenv('BASE_URL')}/gym-details/?adminId={data['id']}"
+    data['subject'] = 'Gym Insight - Updated Gym Details Verification'
+    response = sendEmailNotification(data, emailTemplateConfigs['UPDATED_DOCUMENT_APPROVAL_REJECT'])
+    if response['status']:
+        print(f"updated gym details successfully send to super admin")
+
+def documentApprovalNotification(data):
+    data['link'] = f"{os.getenv('BASE_URL')}/dashboard"
+    data['subject'] = 'Gym Insight - Gym Details Approved'
+    response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_APPROVAL'])
+    if response['status']:
+        print(f"updated gym details successfully send to super admin")
+
+def documentRejectedNotification(data):
+    data["link"] = f"{os.getenv('BASE_URL')}/gym-details/edit",
+    data["subject"] = 'Gym Insight - Gym Details Approved',
+    response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_REJECTED'])
+    if response['status']:
+        print(f"Rejected Notification successfully send to super admin")
 
     
  

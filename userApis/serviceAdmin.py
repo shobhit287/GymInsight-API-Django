@@ -7,7 +7,7 @@ from adminMetaDataApis.models import AdminDocumentData
 from adminMetaDataApis.serializers import AdminDocumentDataSerializer
 from django.contrib.auth.hashers import check_password
 def createAdmin(payload):
-    if payload is None:
+    if not payload:
         return {"error":"Data is missing"}, status.HTTP_400_BAD_REQUEST
     try:
         user= UserSerializer(data=dtoToModel(payload))
@@ -17,8 +17,7 @@ def createAdmin(payload):
             if updateStatus.is_valid():
                 updateStatus.save()
             sendAdminUserCreateNotification({
-                "first_name": user.data["first_name"],
-                "last_name": user.data["last_name"],
+                "userName" : f"{user.data['first_name']} {user.data['last_name']}",
                 "email": user.data["email"],
                 "password": payload.get("password"),
             })
@@ -59,7 +58,7 @@ def getById(id):
 
     
 def update(id, payload):
-    if payload is None:
+    if not payload:
         return {"error":"Data is missing"}, status.HTTP_400_BAD_REQUEST
     if payload.get('password') is not None:
         payload.pop('password')

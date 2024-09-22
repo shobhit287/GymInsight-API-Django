@@ -10,6 +10,8 @@ class AdminMetaDataSerializer(serializers.ModelSerializer):
                   'gym_city',
                   'gym_phone_no',
                   'gym_gst_no',
+                  'created_at',
+                  'updated_at'
                 ]
         extra_kwargs = {
             'admin_meta_data_id': {'read_only': True},
@@ -43,6 +45,7 @@ class AdminDocumentDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdminDocumentData
         fields = [
+                  'document_id',
                   'admin_id',
                   'gym_certificate_storage_path',
                   'gym_logo_storage_path',

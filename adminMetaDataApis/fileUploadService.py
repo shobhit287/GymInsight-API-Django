@@ -17,6 +17,32 @@ def uploadMetaFiles(files):
    return docUrls, 201  
        
   except Exception as e:
-    return {"error":"An error occurd while uploading file","e":e}, 500    
+    return {"error":"An error occurd while uploading file"}, 500   
+
+
+def updateMetaFiles(files):
+  try:
+   filterUpdateFiles = {}
+   for updateFile in files:
+     if files[updateFile] is not None:
+       filterUpdateFiles[updateFile] = files[updateFile]
+   
+   if not  filterUpdateFiles :
+     return {"message":"No file to update"}, 200
+   
+   for file in filterUpdateFiles:
+      if files[file].content_type not in allowedTypes:
+         return {"error":f"Invalid file type for {file}", "status":False}, 400
+      
+   docUrls={}   
+   for file in filterUpdateFiles:
+     fileName = f"{file}_{random.randint(0, 5)}_{int(time.time())}"
+     url, fileId = uploadFileToDrive(fileName, file, files[file])
+     docUrls[file] = {"url":url, "fileId": fileId}
+
+   return docUrls, 201  
+       
+  except Exception as e:
+    return {"error":"An error occurd while uploading file"}, 500    
       
       
