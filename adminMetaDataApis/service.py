@@ -91,8 +91,9 @@ def update(id, payload, upload):
         updateDocumentSerializer = AdminDocumentDataSerializer(document, data=documentData, partial=True)
         if updateDocumentSerializer.is_valid():
             updateDocumentSerializer.save()
-            user = findOne(payload.get('adminId'))
+            user = findOne(id)
             superAdmin= findOneByRole("SUPER_ADMIN")
+            print(user, superAdmin)
             updatedDocumentApprovalRejectNotification({
                 "userName": f"{user['user']['first_name']} {user['user']['last_name']}",
                 "email": superAdmin['user']['email'],
@@ -116,7 +117,7 @@ def update(id, payload, upload):
 def approve(id):
     try:
         document = AdminDocumentData.objects.get(admin_id = id)
-        approveDocument = AdminDocumentDataSerializer(document, data={"status":"APPROVED"}, partial = True)
+        approveDocument = AdminDocumentDataSerializer(document, data={"status":"APPROVED", "rejected_reason": None , "rejected_summary": None}, partial = True)
         if approveDocument.is_valid():
             approveDocument.save()
             user = findOne(id)
@@ -147,8 +148,8 @@ def reject(payload, id):
             documentRejectedNotification({
                 "userName": f"{user['user']['first_name']} {user['user']['last_name']}",
                 "email": user['user']['email'],
-                "rejectedReason": payload.get('rejected_reason'),
-                "rejectedSummary": payload.get('rejected_summary'),
+                "rejectedReason": payload.get('rejectedReason'),
+                "rejectedSummary": payload.get('rejectedSummary'),
                 "id": id
             })
             return {"message":"Status has been changed to 'Rejected'"}, status.HTTP_200_OK

@@ -221,6 +221,14 @@ class AdminMetaDataApprove(APIView):
         
 class AdminMetaDataReject(APIView):
     @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'rejectedReason': openapi.Schema(type=openapi.TYPE_STRING),
+                'rejectedSummary': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+            required=['rejectedReason', 'rejectedSummary']
+        ),
         responses={
             200: openapi.Response(
                 description="Status changes to reject",

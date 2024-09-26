@@ -8,4 +8,5 @@ urlpatterns = [
     path('',include('authApis.urls')),
     path('',include('userApis.urls')),
     path('',include('adminMetaDataApis.urls')),
+    path('',include('userMetaDataApis.urls')),
 ]

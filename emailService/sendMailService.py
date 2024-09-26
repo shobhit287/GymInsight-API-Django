@@ -54,8 +54,8 @@ def documentApprovalNotification(data):
         print(f"updated gym details successfully send to super admin")
 
 def documentRejectedNotification(data):
-    data["link"] = f"{os.getenv('BASE_URL')}/gym-details/edit",
-    data["subject"] = 'Gym Insight - Gym Details Approved',
+    data["link"] = f"{os.getenv('BASE_URL')}/gym-details/edit"
+    data["subject"] = 'Gym Insight - Gym Details Rejected'
     response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_REJECTED'])
     if response['status']:
         print(f"Rejected Notification successfully send to super admin")
