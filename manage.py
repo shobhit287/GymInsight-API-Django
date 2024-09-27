@@ -14,7 +14,6 @@ def main():
         execute_from_command_line(['manage.py', 'makemigrations', 'adminMetaDataApis'])
         execute_from_command_line(['manage.py', 'makemigrations', 'userMetaDataApis'])
         execute_from_command_line(['manage.py', 'migrate'])
-        execute_from_command_line(['manage.py', 'collectstatic'])
         execute_from_command_line(['manage.py', 'createSuperAdmin'])
     
     try:
