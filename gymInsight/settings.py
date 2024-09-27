@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 JWT_KEY = os.getenv("JWT_KEY")
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['gyminsight-api-django.onrender.com']
 
 
 # Application definition
