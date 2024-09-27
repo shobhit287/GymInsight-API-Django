@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'adminMetaDataApis',
-    'userMetaDataApis'
+    'userMetaDataApis',
+    'feesRenewalApis'
 ]
 
 MIDDLEWARE = [
@@ -153,3 +154,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') 
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  
 DEFAULT_FROM_EMAIL = 'Gym Insight <noreply@gmail.com>'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0' 

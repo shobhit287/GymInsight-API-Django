@@ -60,6 +60,12 @@ def documentRejectedNotification(data):
     if response['status']:
         print(f"Rejected Notification successfully send to super admin")
 
+def feesRenewalNotification(data): 
+    data["subject"] = 'Gym Insight - Gym Fees Renewal'
+    response = sendEmailNotification(data, emailTemplateConfigs['FEES_RENEWAL'])
+    if response['status']:
+        print(f"Fees Renewal Notification successfully send to {data['email']}")       
+
     
  
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Insight - Fee Renewal Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .important {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fee Renewal Notification</h1>
+
+    <p>Dear {{userName}},</p>
+    
+    <p>This is to inform you that <span class="important">{{userName}}</span> has an upcoming fee renewal due on <strong>{{renewalDate}}</strong>.</p>
+    
+    <p>We kindly ask you to remind the member to pay their fees promptly to avoid any interruption in their membership.</p>
+    
+    <p>Please ensure the following details are communicated:</p>
+    <ul>
+        <li><strong>Member Name:</strong> {{userName}}</li>
+        <li><strong>Renewal Date:</strong> {{renewalDate}}</li>
+    </ul>
+
+    <p>Thank you for your attention to this matter!</p>
+
+    <p>Best Regards, {{adminName}}<br>Gym Insight Team</p>
+</body>
+</html>

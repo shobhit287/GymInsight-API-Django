@@ -9,4 +9,5 @@ urlpatterns = [
     path('',include('userApis.urls')),
     path('',include('adminMetaDataApis.urls')),
     path('',include('userMetaDataApis.urls')),
+    path('',include('feesRenewalApis.urls')),
 ]

@@ -62,7 +62,7 @@ def delete(admin,id):
         userMetaData = UserMetaData.objects.get(user_id = id)
         userMetaDataSerializer = UserMetaDataSerializer(userMetaData)
         if str(userMetaDataSerializer.data.get('admin_id')) != admin['userId']:
-            return {"error": "This user does not belong to your gym members or you are not authorized to delete this uaer"}, status.HTTP_403_FORBIDDEN   
+            return {"error": "This user does not belong to your gym members or you are not authorized to delete this user"}, status.HTTP_403_FORBIDDEN   
         
         user = User.objects.get(user_id= id)
         user.delete()
@@ -94,8 +94,8 @@ def updateDtoToModel(payload):
     if payload.get('joiningDate'):    
         response["joining_date"]= payload.get('joiningDate')
 
-    if payload.get('renewal_date'):
-        response["renewalDate"]= payload.get('renewalDate')
+    if payload.get('renewalDate'):
+        response["renewal_date"]= payload.get('renewalDate')
 
     if payload.get('paymentMethod'):
         response["payment_method"]= payload.get('paymentMethod')
