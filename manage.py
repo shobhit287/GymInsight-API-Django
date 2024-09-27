@@ -10,8 +10,11 @@ def main():
     # Check if we are running the server
     if 'runserver' in sys.argv:
         from django.core.management import execute_from_command_line
-        execute_from_command_line(['manage.py', 'makemigrations'])
+        execute_from_command_line(['manage.py', 'makemigrations', 'userApis'])
+        execute_from_command_line(['manage.py', 'makemigrations', 'adminMetaDataApis'])
+        execute_from_command_line(['manage.py', 'makemigrations', 'userMetaDataApis'])
         execute_from_command_line(['manage.py', 'migrate'])
+        execute_from_command_line(['manage.py', 'collectstatic'])
         execute_from_command_line(['manage.py', 'createSuperAdmin'])
     
     try:
