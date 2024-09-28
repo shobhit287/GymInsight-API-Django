@@ -81,6 +81,7 @@ def dtoToModel(payload):
         "renewal_date": payload.get('renewalDate'),
         "current_plan_months": payload.get('currentPlanDuration'),
         "payment_method": payload.get('paymentMethod'),
+        "fees": payload.get('fees'),
     }
 
 def updateDtoToModel(payload):
@@ -102,6 +103,9 @@ def updateDtoToModel(payload):
 
     if payload.get('currentPlanDuration'):
         response["current_plan_months"]= payload.get('currentPlanDuration')
+
+    if payload.get('fees'):
+        response["fees"]= payload.get('fees')
     
     return response
 
@@ -114,6 +118,7 @@ def modelToDto(data):
         "joiningDate": data.get('joining_date'),
         "renewalDate": data.get('renewal_date'),
         "currentPlanDuration": data.get('current_plan_months'),
+        "fees": data.get('fees'),
         "paymentMethod": data.get('payment_method'),
         "updatedAt": data.get('updated_at'),
         "createdAt": data.get('created_at'),

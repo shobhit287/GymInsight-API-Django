@@ -10,6 +10,7 @@ class UserMetaData(models.Model):
     joining_date = models.DateField()
     renewal_date = models.DateField()
     current_plan_months = models.IntegerField()
+    fees = models.IntegerField()
     payment_method = models.CharField(max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

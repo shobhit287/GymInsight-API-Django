@@ -17,6 +17,7 @@ class UserMetaData(APIView):
                 'renewalDate': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
                 'paymentMethod': openapi.Schema(type=openapi.TYPE_STRING),
                 'currentPlanDuration': openapi.Schema(type=openapi.TYPE_STRING),
+                'fees': openapi.Schema(type=openapi.TYPE_STRING),
                 'shift': openapi.Schema(type=openapi.TYPE_STRING),
             },
             required=['userId','trainerName', 'currentPlan', 'joiningDate', 'renewalDate','paymentMethod', 'currentPlanDuration', 'shift']
@@ -112,6 +113,7 @@ class UserMetaDataById(APIView):
                 'renewalDate': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
                 'paymentMethod': openapi.Schema(type=openapi.TYPE_STRING),
                 'currentPlanDuration': openapi.Schema(type=openapi.TYPE_STRING),
+                'fees': openapi.Schema(type=openapi.TYPE_STRING),
                 'shift': openapi.Schema(type=openapi.TYPE_STRING),
             },
         ),

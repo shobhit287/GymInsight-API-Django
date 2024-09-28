@@ -46,32 +46,32 @@ class UserAdmin(APIView):
         else: 
             return JsonResponse(validateToken,status= validateToken['code']) 
 
-    @swagger_auto_schema(
-        responses={
-            200: openapi.Response(
-                description="List of all admin users",
-            ),
-            400: openapi.Response(
-                description="Bad request"
-            ),
-             403: openapi.Response(
-                description="Forbidden: You don't have access to perform this action."
-            ),
-            500: openapi.Response(
-                description="Internal Server Error"
-            )
-        }
-    )
-    def get(self, request):
-        validateToken = validateJwt(request.headers.get('Authorization'))
-        if validateToken['status']:
-            if(validateToken['user']['role'] == "SUPER_ADMIN"):
-                response,statusCode = serviceAdmin.getAllAdminUsers()
-                return JsonResponse(response, status=statusCode)
-            else:
-                return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)   
-        else: 
-            return JsonResponse(validateToken,status= validateToken['code'])   
+    # @swagger_auto_schema(
+    #     responses={
+    #         200: openapi.Response(
+    #             description="List of all admin users",
+    #         ),
+    #         400: openapi.Response(
+    #             description="Bad request"
+    #         ),
+    #          403: openapi.Response(
+    #             description="Forbidden: You don't have access to perform this action."
+    #         ),
+    #         500: openapi.Response(
+    #             description="Internal Server Error"
+    #         )
+    #     }
+    # )
+    # def get(self, request):
+    #     validateToken = validateJwt(request.headers.get('Authorization'))
+    #     if validateToken['status']:
+    #         if(validateToken['user']['role'] == "SUPER_ADMIN"):
+    #             response,statusCode = serviceAdmin.getAllAdminUsers()
+    #             return JsonResponse(response, status=statusCode)
+    #         else:
+    #             return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)   
+    #     else: 
+    #         return JsonResponse(validateToken,status= validateToken['code'])   
 
 class UserAdminById(APIView):
     @swagger_auto_schema(
@@ -137,32 +137,32 @@ class UserAdminById(APIView):
         else:
             return JsonResponse(validateToken, validateToken['code'])  
           
-    @swagger_auto_schema(
-        responses={
-            200: openapi.Response(
-                description="Admin Deleted Successfully"
-            ),
-            404: openapi.Response(
-                description="Not Found"
-            ),
-            403: openapi.Response(
-                description="Forbidden: You don't have access to perform this action."
-            ),
-            500: openapi.Response(
-                description="Internal Server Error"
-            )
-        }
-    )
-    def delete(self, request, id):
-        validateToken = validateJwt(request.headers.get('Authorization'))
-        if(validateToken['status']):
-            if validateToken['user']['role'] != "USER" :
-                response, code = serviceAdmin.delete(id)
-                return JsonResponse(response, status= code)
-            else:
-                return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)
-        else:
-            return JsonResponse(validateToken, validateToken['code'])   
+    # @swagger_auto_schema(
+    #     responses={
+    #         200: openapi.Response(
+    #             description="Admin Deleted Successfully"
+    #         ),
+    #         404: openapi.Response(
+    #             description="Not Found"
+    #         ),
+    #         403: openapi.Response(
+    #             description="Forbidden: You don't have access to perform this action."
+    #         ),
+    #         500: openapi.Response(
+    #             description="Internal Server Error"
+    #         )
+    #     }
+    # )
+    # def delete(self, request, id):
+    #     validateToken = validateJwt(request.headers.get('Authorization'))
+    #     if(validateToken['status']):
+    #         if validateToken['user']['role'] != "USER" :
+    #             response, code = serviceAdmin.delete(id)
+    #             return JsonResponse(response, status= code)
+    #         else:
+    #             return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+    #     else:
+    #         return JsonResponse(validateToken, validateToken['code'])   
 
 class UserAdminChangePassword(APIView):
     @swagger_auto_schema(
@@ -241,32 +241,32 @@ class User(APIView):
         else: 
             return JsonResponse(validateToken,status= validateToken['code']) 
 
-    @swagger_auto_schema(
-        responses={
-            200: openapi.Response(
-                description="List of all  users",
-            ),
-            400: openapi.Response(
-                description="Bad request"
-            ),
-             403: openapi.Response(
-                description="Forbidden: You don't have access to perform this action."
-            ),
-            500: openapi.Response(
-                description="Internal Server Error"
-            )
-        }
-    )
-    def get(self, request):
-        validateToken = validateJwt(request.headers.get('Authorization'))
-        if validateToken['status']:
-            if(validateToken['user']['role'] == "ADMIN"):
-                response,statusCode = serviceUser.getAllUsers()
-                return JsonResponse(response, status=statusCode)
-            else:
-                return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)   
-        else: 
-            return JsonResponse(validateToken,status= validateToken['code'])   
+    # @swagger_auto_schema(
+    #     responses={
+    #         200: openapi.Response(
+    #             description="List of all  users",
+    #         ),
+    #         400: openapi.Response(
+    #             description="Bad request"
+    #         ),
+    #          403: openapi.Response(
+    #             description="Forbidden: You don't have access to perform this action."
+    #         ),
+    #         500: openapi.Response(
+    #             description="Internal Server Error"
+    #         )
+    #     }
+    # )
+    # def get(self, request):
+    #     validateToken = validateJwt(request.headers.get('Authorization'))
+    #     if validateToken['status']:
+    #         if(validateToken['user']['role'] == "ADMIN"):
+    #             response,statusCode = serviceUser.getAllUsers()
+    #             return JsonResponse(response, status=statusCode)
+    #         else:
+    #             return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)   
+    #     else: 
+    #         return JsonResponse(validateToken,status= validateToken['code'])   
 
 class UserById(APIView):
     @swagger_auto_schema(
@@ -332,32 +332,32 @@ class UserById(APIView):
         else:
             return JsonResponse(validateToken, validateToken['code'])  
           
-    @swagger_auto_schema(
-        responses={
-            200: openapi.Response(
-                description="User Deleted Successfully"
-            ),
-            404: openapi.Response(
-                description="Not Found"
-            ),
-            403: openapi.Response(
-                description="Forbidden: You don't have access to perform this action."
-            ),
-            500: openapi.Response(
-                description="Internal Server Error"
-            )
-        }
-    )
-    def delete(self, request, id):
-        validateToken = validateJwt(request.headers.get('Authorization'))
-        if(validateToken['status']):
-            if validateToken['user']['role'] == "ADMIN" :
-                response, code = serviceUser.delete(id)
-                return JsonResponse(response, status= code)
-            else:
-                return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)
-        else:
-            return JsonResponse(validateToken, validateToken['code'])    
+    # @swagger_auto_schema(
+    #     responses={
+    #         200: openapi.Response(
+    #             description="User Deleted Successfully"
+    #         ),
+    #         404: openapi.Response(
+    #             description="Not Found"
+    #         ),
+    #         403: openapi.Response(
+    #             description="Forbidden: You don't have access to perform this action."
+    #         ),
+    #         500: openapi.Response(
+    #             description="Internal Server Error"
+    #         )
+    #     }
+    # )
+    # def delete(self, request, id):
+    #     validateToken = validateJwt(request.headers.get('Authorization'))
+    #     if(validateToken['status']):
+    #         if validateToken['user']['role'] == "ADMIN" :
+    #             response, code = serviceUser.delete(id)
+    #             return JsonResponse(response, status= code)
+    #         else:
+    #             return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+    #     else:
+    #         return JsonResponse(validateToken, validateToken['code'])    
 
 class UserChangePassword(APIView):
     @swagger_auto_schema(

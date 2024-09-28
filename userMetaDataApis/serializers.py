@@ -6,7 +6,7 @@ class UserMetaDataSerializer(serializers.ModelSerializer):
     user_details = UserSerializer(source='user_id', read_only=True)
     class Meta:
         model = UserMetaData
-        fields = ['user_meta_data_id', 'user_id', 'admin_id', 'trainer_assigned_name', 'shift', 'joining_date', 'renewal_date', 'current_plan_months', 'payment_method','user_details', 'created_at', 'updated_at']
+        fields = ['user_meta_data_id', 'user_id', 'admin_id', 'trainer_assigned_name', 'shift', 'joining_date', 'renewal_date', 'current_plan_months', 'payment_method', 'fees','user_details', 'created_at', 'updated_at']
         extra_kwargs = {
             'user_meta_data_id': {'read_only': True},
             'created_at': {'read_only': True},
@@ -21,6 +21,7 @@ class UserMetaDataSerializer(serializers.ModelSerializer):
                 joining_date = validated_data.get('joining_date'),
                 renewal_date = validated_data.get('renewal_date'),
                 current_plan_months = validated_data.get('current_plan_months'),
+                fees = validated_data.get('fees'),
                 payment_method = validated_data.get('payment_method')
             )
             userMetaData.save()
@@ -33,6 +34,7 @@ class UserMetaDataSerializer(serializers.ModelSerializer):
             instance.renewal_date = validated_data.get('renewal_date', instance.renewal_date)
             instance.current_plan_months = validated_data.get('current_plan_months', instance.current_plan_months)
             instance.payment_method = validated_data.get('payment_method', instance.payment_method)
+            instance.fees = validated_data.get('fees', instance.fees)
             instance.save()
             return instance
 
