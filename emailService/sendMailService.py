@@ -7,7 +7,7 @@ def passwordResetSendNotification(data):
     dynamicData= {
                   "userName" : f"{data['first_name']} {data['last_name']}",
                   "email":data['email'],
-                  "link" : f"{os.getenv('BASE_URL')}?token={data['token']}",
+                  "link" : f"{os.getenv('BASE_URL')}/verify-token?token={data['token']}",
                   "subject": 'Password Reset Request'
                 }
     response = sendEmailNotification(dynamicData, emailTemplateConfigs['PASSWORD_RESET_TEMPLATE'])
@@ -19,7 +19,7 @@ def passwordResetSendNotification(data):
     
 def sendAdminUserCreateNotification(data):
     data["link"] = f"{os.getenv('BASE_URL')}/login"
-    data["subject"] = 'Gym Insight Admin Credentials'
+    data["subject"] = 'Welcome to Gym Insight!'
     response = sendEmailNotification(data, emailTemplateConfigs['ADMIN_CREDENTIALS_TEMPLATE'])
     if response['status']:
         print(f"admin credentials  send successfully to {data['email']}")

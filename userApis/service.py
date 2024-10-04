@@ -1,21 +1,34 @@
 from rest_framework import status
-from . models  import User
-from emailService.sendMailService import sendUserCreateNotification
+from .models  import User
+from emailService.sendMailService import sendUserCreateNotification, sendAdminUserCreateNotification
 from rest_framework.exceptions import ValidationError
+from adminMetaDataApis.serializers import AdminDocumentDataSerializer
 from django.contrib.auth.hashers import check_password
 from .serializers import UserSerializer
-def createUser(payload):
+def create(payload):
     if payload is None:
         return {"error":"Data is missing"}, status.HTTP_400_BAD_REQUEST
     try:
         user= UserSerializer(data=dtoToModel(payload))
         if user.is_valid():
             user.save()
-            sendUserCreateNotification({
-                "userName" : f"{user.data['first_name']} {user.data['last_name']}",
-                "email": user.data["email"],
-                "password": payload.get("password"),
-            })
+            if user.data["role"] == "ADMIN":
+                adminDocumentSerializer = AdminDocumentDataSerializer(data= {"admin_id" : user.data['user_id']})
+                if adminDocumentSerializer.is_valid():
+                    adminDocumentSerializer.save()
+                else:
+                    return{"error": adminDocumentSerializer.errors},status.HTTP_400_BAD_REQUEST    
+                sendAdminUserCreateNotification({
+                    "userName" : f"{user.data['first_name']} {user.data['last_name']}",
+                    "email": user.data["email"],
+                    "password": payload.get("password"),
+                })
+            else :
+                  sendUserCreateNotification({
+                    "userName" : f"{user.data['first_name']} {user.data['last_name']}",
+                    "email": user.data["email"],
+                    "password": payload.get("password"),
+                })  
             return {"user":modelToDto(user.data)},status.HTTP_201_CREATED
         else:
             return{"error": user.errors},status.HTTP_400_BAD_REQUEST
@@ -24,7 +37,7 @@ def createUser(payload):
         return {"error": str(e)}, status.HTTP_400_BAD_REQUEST
 
     except Exception as e:
-        return {"error": "An unexpected error occurred"}, status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {"error": "An unexpected error occurred","error":e}, status.HTTP_500_INTERNAL_SERVER_ERROR
 
 def getAllUsers():
     try:
@@ -55,8 +68,6 @@ def getById(id):
 def update(id, payload):
     if payload is None:
         return {"error":"Data is missing"}, status.HTTP_400_BAD_REQUEST
-    if payload.get('password') is not None:
-        payload.pop('password')
     try:
         user = User.objects.get(user_id= id)
         updateUser = UserSerializer(user, data= updateDtoToModel(payload), partial= True)
@@ -109,17 +120,12 @@ def changePassword(id, payload):
         return {"error": "An unexpected error occurred"}, status.HTTP_500_INTERNAL_SERVER_ERROR
 
 def dtoToModel(payload):
-    required_fields = ['firstName', 'lastName', 'email', 'password']
-    for field in required_fields:
-        if not payload.get(field):
-            raise ValueError(f"Missing required field: {field}")
-
     return {
         "first_name": payload.get('firstName'),
         "last_name": payload.get('lastName'),
         "email": payload.get('email').lower() if payload.get('email') else None,
         "password": payload.get('password'),
-        "role": "USER"
+        "role": payload.get('role')
     }
 
 def modelToDto(data):
@@ -141,7 +147,7 @@ def updateDtoToModel(payload):
         structuredData['last_name'] = payload.get('lastName')
     if payload.get('email'):
         structuredData['email'] = payload.get('email').lower()
-    if payload.get('password'):
-        structuredData['password'] = payload.get('password')
+    if payload.get('role'):
+        structuredData['role'] = payload.get('role')
 
     return structuredData    

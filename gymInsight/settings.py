@@ -24,6 +24,7 @@ load_dotenv()
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 JWT_KEY = os.getenv("JWT_KEY")
+BASE_URL = os.getenv("BASE_URL")
 DEBUG = True
 
 ALLOWED_HOSTS = ['gyminsight-api-django.onrender.com', 'localhost']
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authApis',
     'userApis',
+    'corsheaders',
     'rest_framework',
     'drf_yasg',
     'adminMetaDataApis',
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -133,11 +136,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
+
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'Bearer': {
@@ -162,3 +161,7 @@ DEFAULT_FROM_EMAIL = 'Gym Insight <noreply@gmail.com>'
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'  
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0' 
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  
+]

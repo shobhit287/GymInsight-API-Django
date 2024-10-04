@@ -1,5 +1,4 @@
 import jwt 
-from rest_framework import status
 from gymInsight.settings import JWT_KEY
 from functools import wraps
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError

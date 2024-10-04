@@ -38,10 +38,6 @@ def forgetPassword(payload):
 
     
 
-
-
-
-
 def findByEmail(email):
     user = User.objects.get(email = email)
     userSerializer = UserSerializer(user)
@@ -55,13 +51,7 @@ def validateUser(payload):
             return user
         return None
 
-
-def verifyResetToken(token):
-    validateToken = jwt.validateJwt(token)
-    if validateToken['status']:
-        return JsonResponse({"redirectUrl":f"journey-junction/reset-password?token={token}"},status=200)
-    else:
-        return JsonResponse(validateToken, status= validateToken['code'])
+    
 
 def resetPassword(payload, token):
     try:

@@ -1,9 +1,11 @@
 from rest_framework.views import APIView
-from django.http import JsonResponse
+from django.http import JsonResponse,  HttpResponseRedirect
 from rest_framework import status
+from . import jwt
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from . import service
+from gymInsight.settings import BASE_URL
 
 class Auth(APIView):
       @swagger_auto_schema(
@@ -66,8 +68,11 @@ class AuthForgetPassword(APIView):
 
 class AuthVerifyToken(APIView):  
     def get(self,request, token):
-            response = service.verifyResetToken(token)
-            return response          
+        validateToken = jwt.validateJwt(token)
+        if validateToken['status']:
+            return  HttpResponseRedirect(f"{BASE_URL}/reset-password?token={token}")
+        else:
+            return JsonResponse(validateToken, status= validateToken['code'])         
 
 class AuthResetPassword(APIView):
       @swagger_auto_schema(
