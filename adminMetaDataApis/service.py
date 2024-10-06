@@ -29,7 +29,7 @@ def create(admin, payload, upload):
             documentApprovalRejectNotification.delay({
                 "userName": f"{user['user']['first_name']} {user['user']['last_name']}",
                 "email": superAdmin['user']['email'],
-                "id": admin['user']['adminId']
+                "id": admin['user']['userId']
             })
             return {"message": "Admin data created successfully"}, status.HTTP_201_CREATED
         else:
@@ -191,6 +191,7 @@ def dtoToModel(payload, upload):
         "gym_city": payload.get('gymCity'),
         "gym_phone_no": payload.get('gymPhoneNo'),
         "gym_gst_no": payload.get('gymGstNo'),
+        "default_users_password": payload.get('defaultUserPassword'),
     }
     documentData = {
         "gym_certificate_storage_path": upload['gym_certificate']['url'],
@@ -210,6 +211,7 @@ def modelToDto(adminMeta, adminDocument):
                 "gymCity": adminMeta.get('gym_city'),
                 "gymPhoneNo": adminMeta.get('gym_phone_no'),
                 "gymGstNo": adminMeta.get('gym_gst_no'),
+                "defaultUserPassword": adminMeta.get('default_users_password'),
                 "documentData":{
                     "documentId": adminDocument.get('document_id'),
                     "gymCertificatePath": adminDocument.get('gym_certificate_storage_path'),

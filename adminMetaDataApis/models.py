@@ -10,7 +10,7 @@ class AdminMetaData(models.Model):
      gym_address = models.TextField()
      gym_city = models.CharField(max_length=50)
      gym_phone_no = models.CharField(max_length=10)
-     gym_gst_no = models.CharField(max_length=15)
+     gym_gst_no = models.CharField(max_length=15, unique=True)
      default_users_password = models.CharField(max_length=128)
      created_at = models.DateTimeField(auto_now_add= True)
      updated_at = models.DateTimeField(auto_now= True)

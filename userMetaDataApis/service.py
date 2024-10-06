@@ -113,6 +113,9 @@ def modelToDto(data):
     return {
         "userMetaDataId": data.get('user_meta_data_id'),
         "userId": data.get('user_id'),
+        "firstName": data['user_details']['first_name'],
+        "lastName": data['user_details']['last_name'],
+        "email": data['user_details']['email'],
         "trainerName": data.get('trainer_assigned_name'),
         "shift": data.get('shift'),
         "joiningDate": data.get('joining_date'),

@@ -25,6 +25,7 @@ def create(payload):
             else :
                   sendUserCreateNotification.delay({
                     "userName" : f"{user.data['first_name']} {user.data['last_name']}",
+                    "password" : payload["password"],
                     "email": user.data["email"],
                 })  
             return {"user":modelToDto(user.data)},status.HTTP_201_CREATED

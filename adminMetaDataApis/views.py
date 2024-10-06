@@ -20,6 +20,7 @@ class AdminMetaData(APIView):
         openapi.Parameter('gymCity', openapi.IN_FORM, description="Gym City", type=openapi.TYPE_STRING, required=True),
         openapi.Parameter('gymPhoneNo', openapi.IN_FORM, description="Gym Phone Number", type=openapi.TYPE_STRING, required=True),
         openapi.Parameter('gymGstNo', openapi.IN_FORM, description="Gym GST Number", type=openapi.TYPE_STRING, required=True),
+        openapi.Parameter('defaultUserPassword', openapi.IN_FORM, description="Default Users Password", type=openapi.TYPE_STRING, required=True),
         openapi.Parameter('gymLogo', openapi.IN_FORM, description="Gym Logo (File)", type=openapi.TYPE_FILE, required=True),
         openapi.Parameter('gymCertificate', openapi.IN_FORM, description="Gym Certification (File)", type=openapi.TYPE_FILE, required=True),
         openapi.Parameter('gymLicense', openapi.IN_FORM, description="Gym License (File)", type=openapi.TYPE_FILE, required=True),
