@@ -1,8 +1,11 @@
 import os
 from dotenv import load_dotenv
+from celery import shared_task
 from .emailTemplateConfig import emailTemplateConfigs
 from .sendEmail import sendEmailNotification
 load_dotenv()
+
+@shared_task
 def passwordResetSendNotification(data):
     dynamicData= {
                   "userName" : f"{data['first_name']} {data['last_name']}",
@@ -16,7 +19,8 @@ def passwordResetSendNotification(data):
         return {'message': 'Reset link sent to your mail', "status": True}
     else: 
         return response
-    
+
+@shared_task   
 def sendAdminUserCreateNotification(data):
     data["link"] = f"{os.getenv('BASE_URL')}/login"
     data["subject"] = 'Welcome to Gym Insight!'
@@ -24,6 +28,7 @@ def sendAdminUserCreateNotification(data):
     if response['status']:
         print(f"admin credentials  send successfully to {data['email']}")
 
+@shared_task
 def sendUserCreateNotification(data):
     data["link"] = f"{os.getenv('BASE_URL')}/login"
     data["subject"] = 'Gym Insight User Credentials'
@@ -31,7 +36,7 @@ def sendUserCreateNotification(data):
     if response['status']:
         print(f"user credentials  send successfully to {data['email']}")
 
-
+@shared_task
 def documentApprovalRejectNotification(data):
     data['link'] = f"{os.getenv('BASE_URL')}/gym-details/?adminId={data['id']}"
     data['subject'] = 'Gym Insight - Gym Details Verification'
@@ -39,6 +44,7 @@ def documentApprovalRejectNotification(data):
     if response['status']:
         print(f"Gym details send successfully to super admin")
 
+@shared_task
 def updatedDocumentApprovalRejectNotification(data):
     data['link'] = f"{os.getenv('BASE_URL')}/gym-details/?adminId={data['id']}"
     data['subject'] = 'Gym Insight - Updated Gym Details Verification'
@@ -46,6 +52,7 @@ def updatedDocumentApprovalRejectNotification(data):
     if response['status']:
         print(f"updated gym details successfully send to super admin")
 
+@shared_task
 def documentApprovalNotification(data):
     data['link'] = f"{os.getenv('BASE_URL')}/dashboard"
     data['subject'] = 'Gym Insight - Gym Details Approved'
@@ -53,12 +60,14 @@ def documentApprovalNotification(data):
     if response['status']:
         print(f"updated gym details successfully send to super admin")
 
+@shared_task
 def documentRejectedNotification(data):
     data["link"] = f"{os.getenv('BASE_URL')}/gym-details/edit"
     data["subject"] = 'Gym Insight - Gym Details Rejected'
     response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_REJECTED'])
     if response['status']:
         print(f"Rejected Notification successfully send to super admin")
+
 
 def feesRenewalNotification(data): 
     data["subject"] = 'Gym Insight - Gym Fees Renewal'

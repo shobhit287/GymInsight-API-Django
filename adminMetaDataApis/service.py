@@ -5,11 +5,12 @@ from rest_framework import status
 from userApis.models import User
 from userApis.helper import findOne, findOneByRole
 from emailService.sendMailService import documentApprovalRejectNotification, updatedDocumentApprovalRejectNotification, documentApprovalNotification, documentRejectedNotification
-def create(payload, upload):
+def create(admin, payload, upload):
     try:
         adminMetaData, documentData = dtoToModel(payload, upload)
 
         # Validate and save AdminMetaData
+        adminMetaData['admin_id'] =  admin['user']['userId']
         createMetaDataSerializer = AdminMetaDataSerializer(data=adminMetaData)
         if createMetaDataSerializer.is_valid():
             createMetaDataSerializer.save()
@@ -19,16 +20,16 @@ def create(payload, upload):
             return {"error": createMetaDataSerializer.errors}, status.HTTP_400_BAD_REQUEST
 
         # Update AdminDocumentData
-        document = AdminDocumentData.objects.get(admin_id=payload.get('adminId'))
+        document = AdminDocumentData.objects.get(admin_id= admin['user']['userId'])
         updateDocumentSerializer = AdminDocumentDataSerializer(document, data=documentData, partial=True)
         if updateDocumentSerializer.is_valid():
             updateDocumentSerializer.save()
-            user = findOne(payload.get('adminId'))
+            user = findOne(admin['user']['userId'])
             superAdmin= findOneByRole("SUPER_ADMIN")
-            documentApprovalRejectNotification({
+            documentApprovalRejectNotification.delay({
                 "userName": f"{user['user']['first_name']} {user['user']['last_name']}",
                 "email": superAdmin['user']['email'],
-                "id": payload.get('adminId')
+                "id": admin['user']['adminId']
             })
             return {"message": "Admin data created successfully"}, status.HTTP_201_CREATED
         else:
@@ -94,7 +95,7 @@ def update(id, payload, upload):
             user = findOne(id)
             superAdmin= findOneByRole("SUPER_ADMIN")
             print(user, superAdmin)
-            updatedDocumentApprovalRejectNotification({
+            updatedDocumentApprovalRejectNotification.delay({
                 "userName": f"{user['user']['first_name']} {user['user']['last_name']}",
                 "email": superAdmin['user']['email'],
                 "id": payload.get('adminId')
@@ -121,7 +122,7 @@ def approve(id):
         if approveDocument.is_valid():
             approveDocument.save()
             user = findOne(id)
-            documentApprovalNotification({
+            documentApprovalNotification.delay({
                 "userName": f"{user['user']['first_name']} {user['user']['last_name']}",
                 "email": user['user']['email'],
                 "id": id
@@ -145,7 +146,7 @@ def reject(payload, id):
         if approveDocument.is_valid():
             approveDocument.save()
             user = findOne(id)
-            documentRejectedNotification({
+            documentRejectedNotification.delay({
                 "userName": f"{user['user']['first_name']} {user['user']['last_name']}",
                 "email": user['user']['email'],
                 "rejectedReason": payload.get('rejectedReason'),
@@ -173,9 +174,18 @@ def delete(id):
         return {"error": "An unexpected error occurred"}, status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
+def getAdminDocumentById(id):
+    try:
+        adminDocument = AdminDocumentData.objects.get(admin_id = id)
+        adminDocumentSerializer = AdminDocumentDataSerializer(adminDocument)
+        return {"data": modelToDto(None, adminDocumentSerializer.data)}, 200    
+    except AdminDocumentData.DoesNotExist:
+        return {"error": "Admin not found"}, status.HTTP_404_NOT_FOUND
+    except Exception as e:
+        return {"error": "An unexpected error occur"}, status.HTTP_500_INTERNAL_SERVER_ERROR
+
 def dtoToModel(payload, upload):
     metaData = {
-        "admin_id": payload.get('adminId'),
         "gym_name": payload.get('gymName'),
         "gym_address": payload.get('gymAddress'),
         "gym_city": payload.get('gymCity'),
@@ -185,33 +195,49 @@ def dtoToModel(payload, upload):
     documentData = {
         "gym_certificate_storage_path": upload['gym_certificate']['url'],
         "gym_logo_storage_path": upload['gym_logo']['url'],
-        "gym_license_storage_path": upload['gym_license']['url']
+        "gym_license_storage_path": upload['gym_license']['url'],
+        "status": "PENDING",
     }
     return metaData, documentData
 
 
 def modelToDto(adminMeta, adminDocument):
-    return {
-        "adminId" :  adminMeta.get('admin_id'),
-        "gymName": adminMeta.get('gym_name'),
-        "gymAddress": adminMeta.get('gym_address'),
-        "gymCity": adminMeta.get('gym_city'),
-        "gymPhoneNo": adminMeta.get('gym_phone_no'),
-        "gymGstNo": adminMeta.get('gym_gst_no'),
-        "documentData":{
+    if adminMeta and adminDocument :
+            return {
+                "adminId" :  adminMeta.get('admin_id'),
+                "gymName": adminMeta.get('gym_name'),
+                "gymAddress": adminMeta.get('gym_address'),
+                "gymCity": adminMeta.get('gym_city'),
+                "gymPhoneNo": adminMeta.get('gym_phone_no'),
+                "gymGstNo": adminMeta.get('gym_gst_no'),
+                "documentData":{
+                    "documentId": adminDocument.get('document_id'),
+                    "gymCertificatePath": adminDocument.get('gym_certificate_storage_path'),
+                    "gymLicensePath": adminDocument.get('gym_license_storage_path'),
+                    "gymLogoPath": adminDocument.get('gym_logo_storage_path'),
+                    "rejectedReason": adminDocument.get('rejected_reason'),
+                    "rejectedSummary": adminDocument.get('rejected_summary'),
+                    "updatedAt": adminDocument.get('updated_at'),
+                    "createdAt": adminDocument.get('created_at'),
+                },
+                "status": adminDocument.get('status'),
+                "updatedAt": adminMeta.get('updated_at'),
+                "createdAt": adminMeta.get('created_at'),
+            }
+    else:
+        return {
             "documentId": adminDocument.get('document_id'),
+            "adminId": adminDocument.get('admin_id'),
             "gymCertificatePath": adminDocument.get('gym_certificate_storage_path'),
             "gymLicensePath": adminDocument.get('gym_license_storage_path'),
             "gymLogoPath": adminDocument.get('gym_logo_storage_path'),
             "rejectedReason": adminDocument.get('rejected_reason'),
             "rejectedSummary": adminDocument.get('rejected_summary'),
+            "status": adminDocument.get('status'),
             "updatedAt": adminDocument.get('updated_at'),
             "createdAt": adminDocument.get('created_at'),
-        },
-        "status": adminDocument.get('status'),
-        "updatedAt": adminMeta.get('updated_at'),
-        "createdAt": adminMeta.get('created_at'),
-    }
+        }
+
 
 def updateDtoToModel(payload, upload):
     metaData = {}

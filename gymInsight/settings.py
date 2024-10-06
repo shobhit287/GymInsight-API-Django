@@ -25,6 +25,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 JWT_KEY = os.getenv("JWT_KEY")
 BASE_URL = os.getenv("BASE_URL")
+GOOGLE_AUTH_CLIENT_ID = os.getenv("GOOGLE_AUTH_CLIENT_ID")
 DEBUG = True
 
 ALLOWED_HOSTS = ['gyminsight-api-django.onrender.com', 'localhost']
@@ -134,6 +135,18 @@ STATIC_URL = '/static/'
 
 # For production, use a directory for collected static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# settings.py
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle', 
+        'rest_framework.throttling.UserRateThrottle',  
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/minute',   
+        'user': '60/minute', 
+    }
+}
 
 
 

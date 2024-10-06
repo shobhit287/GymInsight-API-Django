@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from . models import AdminDocumentData, AdminMetaData
+from django.contrib.auth.hashers import make_password
 class AdminMetaDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdminMetaData
@@ -9,6 +10,7 @@ class AdminMetaDataSerializer(serializers.ModelSerializer):
                   'gym_address',
                   'gym_city',
                   'gym_phone_no',
+                  'default_users_password',
                   'gym_gst_no',
                   'created_at',
                   'updated_at'
@@ -27,7 +29,7 @@ class AdminMetaDataSerializer(serializers.ModelSerializer):
                 gym_city = validated_data.get('gym_city'),
                 gym_phone_no = validated_data.get('gym_phone_no'),
                 gym_gst_no = validated_data.get('gym_gst_no'),
-
+                default_users_password = make_password(validated_data.get('default_users_password'))
             )
             adminMetaData.save()
             return adminMetaData

@@ -32,11 +32,40 @@ class Auth(APIView):
       def post(self,request):
         payload = request.data
         if payload:
-            response = service.login(payload)
-            return response
+            response, code = service.login(payload)
+            return JsonResponse(response, status = code)
 
         else:
             return JsonResponse({'error':'Data is missing'}, status=status.HTTP_400_BAD_REQUEST)
+        
+class AuthGoogleLogin(APIView):
+      @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'token': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+            required=['token']
+        ),
+        responses={
+            200: openapi.Response(
+                description="Login successfully"
+            ),
+            400: openapi.Response(
+                description="Bad request"
+            ),
+            401: openapi.Response(
+                description="Unauthorized"
+            )
+        }
+    )
+      def post(self,request):
+        payload = request.data
+        if payload.get('token'):
+            response, code = service.googleAuthLogin(payload)
+            return JsonResponse(response, status = code)
+        else:
+            return JsonResponse({'error':'Token is missing'}, status=status.HTTP_400_BAD_REQUEST)
         
 class AuthForgetPassword(APIView):
       @swagger_auto_schema(
@@ -59,8 +88,8 @@ class AuthForgetPassword(APIView):
       def post(self,request):
         payload = request.data
         if payload:
-            response = service.forgetPassword(payload)
-            return response
+            response, code = service.forgetPassword(payload)
+            return JsonResponse(response, status = code)
         else:
             return JsonResponse({'error':'Email is required'}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -95,7 +124,7 @@ class AuthResetPassword(APIView):
       def post(self,request,token):
         payload = request.data
         if payload:
-            response = service.resetPassword(payload,token)
-            return response
+            response, code = service.resetPassword(payload,token)
+            return JsonResponse(response, status = code)
         else:
             return JsonResponse({'error':'password is required'}, status=status.HTTP_400_BAD_REQUEST)            

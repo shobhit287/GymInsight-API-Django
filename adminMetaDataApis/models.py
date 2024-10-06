@@ -11,6 +11,7 @@ class AdminMetaData(models.Model):
      gym_city = models.CharField(max_length=50)
      gym_phone_no = models.CharField(max_length=10)
      gym_gst_no = models.CharField(max_length=15)
+     default_users_password = models.CharField(max_length=128)
      created_at = models.DateTimeField(auto_now_add= True)
      updated_at = models.DateTimeField(auto_now= True)
      def __str__(self):
@@ -22,7 +23,7 @@ class AdminDocumentData(models.Model):
      gym_certificate_storage_path = models.TextField(null= True)
      gym_logo_storage_path = models.TextField(null = True)
      gym_license_storage_path = models.TextField(null = True)
-     status = models.CharField(max_length=10,choices= status, default= 'PENDING')
+     status = models.CharField(max_length=10,choices= status, null= True, blank=True)
      rejected_reason = models.TextField(null=True, blank=True)
      rejected_summary = models.TextField(null =True, blank= True)
      created_at = models.DateTimeField(auto_now_add= True)

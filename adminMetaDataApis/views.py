@@ -15,7 +15,6 @@ class AdminMetaData(APIView):
 
     @swagger_auto_schema(
     manual_parameters=[
-        openapi.Parameter('adminId', openapi.IN_FORM, description="Admin ID ", type=openapi.TYPE_STRING, required=True),
         openapi.Parameter('gymName', openapi.IN_FORM, description="Gym Name", type=openapi.TYPE_STRING, required=True),
         openapi.Parameter('gymAddress', openapi.IN_FORM, description="Gym Address", type=openapi.TYPE_STRING, required=True),
         openapi.Parameter('gymCity', openapi.IN_FORM, description="Gym City", type=openapi.TYPE_STRING, required=True),
@@ -47,7 +46,7 @@ class AdminMetaData(APIView):
                     'gym_license': payload.get('gymLicense')
                 })
                 if code == 201:
-                    response,statusCode = service.create(payload, upload)
+                    response,statusCode = service.create(validateToken, payload, upload)
                     return JsonResponse(response, status= statusCode)
                 else:
                     return JsonResponse(upload, status=code)
@@ -254,4 +253,32 @@ class AdminMetaDataReject(APIView):
                 return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)   
         else: 
             return JsonResponse(validateToken,status= validateToken['code']) 
+        
+class AdminDocumentDataById(APIView):
+    @swagger_auto_schema(
+        responses={
+            200: openapi.Response(
+                description="Detail of admin document data",
+            ),
+            404: openapi.Response(
+                description="Admin not found"
+            ),
+            403: openapi.Response(
+                description="Forbidden: You don't have access to perform this action."
+            ),
+            500: openapi.Response(
+                description="Internal Server Error"
+            )
+        }
+    )
+    def get(self,request, id):
+        validateToken = validateJwt(request.headers.get('Authorization'))
+        if validateToken['status']:
+            if(validateToken['user']['role'] != "USER"):
+                response, statusCode = service.getAdminDocumentById(id)
+                return JsonResponse(response, status= statusCode)
+            else:
+                return JsonResponse({"error": "You don't have access to perform this action."}, status=status.HTTP_403_FORBIDDEN)   
+        else: 
+            return JsonResponse(validateToken,status= validateToken['code'])        
 

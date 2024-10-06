@@ -2,9 +2,9 @@ from rest_framework import status
 from userMetaDataApis.models import UserMetaData
 from userMetaDataApis.serializers import UserMetaDataSerializer
 from django.utils import timezone
-from gymInsight.celeryTasks import sendFeeRenewalNotification
 from emailService.sendMailService import feesRenewalNotification
 from datetime import datetime
+from celery import shared_task
 
 def notifyAll(admin):
       try:
@@ -44,3 +44,16 @@ def notifyById(admin, id):
            return {"error": "An unexpected error occured"}, status.HTTP_500_INTERNAL_SERVER_ERROR
         
 
+
+
+@shared_task
+def sendFeeRenewalNotification(renewalUsersSerializer, admin):
+    for renewalUser in renewalUsersSerializer:
+        renewalDate = datetime.strptime(renewalUser['renewal_date'], "%Y-%m-%d").date()
+        formattedRenewalDate = renewalDate.strftime("%d %B %Y")
+        feesRenewalNotification({
+            "userName": f"{renewalUser['user_details']['first_name']} {renewalUser['user_details']['last_name']}",
+            "adminName": f"{admin['firstName']} {admin['lastName']}",
+            "renewalDate": formattedRenewalDate,
+            "email": renewalUser['user_details']['email']
+        })

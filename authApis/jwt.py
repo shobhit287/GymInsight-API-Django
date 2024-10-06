@@ -1,5 +1,6 @@
-import jwt 
-from gymInsight.settings import JWT_KEY
+import jwt, requests, json
+from jwt import PyJWKClient
+from gymInsight.settings import JWT_KEY, GOOGLE_AUTH_CLIENT_ID
 from functools import wraps
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from userApis.helper import findOne
@@ -46,6 +47,30 @@ def validateJwt(token):
             return {'error': 'Token has expired', 'code': 401, 'status': False}
         except InvalidTokenError:
             return {'error': 'Invalid token', 'code': 400, 'status': False}
+        
+def validateJwtGoogleAuth(token):
+    try:
+        # Decode the token header to get the 'kid'
+        header = jwt.get_unverified_header(token)
+        kid = header.get('kid')
+
+        # Create a JWK client to fetch Google's public keys
+        jwkClient = PyJWKClient("https://www.googleapis.com/oauth2/v3/certs")
+
+        # Get the public key for the specific 'kid'
+        signingKey = jwkClient.get_signing_key(kid)
+        publicKey = signingKey.key
+
+        # Decode and verify the token
+        decodedToken = jwt.decode(token, publicKey, algorithms=["RS256"], audience= GOOGLE_AUTH_CLIENT_ID, issuer='https://accounts.google.com')
+        return {'user': decodedToken, 'status': True}
+
+    except ExpiredSignatureError:
+        return {'error': 'Token has expired', 'code': 401, 'status': False}
+    except InvalidTokenError:
+        return {'error': 'Invalid token', 'code': 400, 'status': False}
+    except Exception as e:
+        return {'error': str(e), 'code': 500, 'status': False}
 
 
 

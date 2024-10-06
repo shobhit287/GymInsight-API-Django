@@ -18,16 +18,14 @@ def create(payload):
                     adminDocumentSerializer.save()
                 else:
                     return{"error": adminDocumentSerializer.errors},status.HTTP_400_BAD_REQUEST    
-                sendAdminUserCreateNotification({
+                sendAdminUserCreateNotification.delay({
                     "userName" : f"{user.data['first_name']} {user.data['last_name']}",
                     "email": user.data["email"],
-                    "password": payload.get("password"),
                 })
             else :
-                  sendUserCreateNotification({
+                  sendUserCreateNotification.delay({
                     "userName" : f"{user.data['first_name']} {user.data['last_name']}",
                     "email": user.data["email"],
-                    "password": payload.get("password"),
                 })  
             return {"user":modelToDto(user.data)},status.HTTP_201_CREATED
         else:

@@ -1,6 +1,7 @@
 from django.urls import path,include
 from . import views
 urlpatterns=[
+   path('admin-document-data/<str:id>',views.AdminDocumentDataById.as_view(),name="adminDocumentDataById"),
    path('admin-meta-data',views.AdminMetaData.as_view(),name="adminMeta"),
    path('admin-meta-data/<str:id>',views.AdminMetaDataById.as_view(),name="adminMetaById"),
    path('admin-meta-data/<str:id>/approve',views.AdminMetaDataApprove.as_view(),name="adminMetaApprove"),
