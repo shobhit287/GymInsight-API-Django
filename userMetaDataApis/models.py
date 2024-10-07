@@ -7,7 +7,7 @@ class UserMetaData(models.Model):
     admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='admin_metadata')
     trainer_assigned_name = models.CharField(max_length=50, null=True, blank=True)
     shift = models.CharField(max_length=10)
-    joining_date = models.DateField()
+    last_fees_submission_date = models.DateField()
     renewal_date = models.DateField()
     current_plan_months = models.IntegerField()
     fees = models.IntegerField()

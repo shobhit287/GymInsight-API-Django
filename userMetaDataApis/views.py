@@ -13,14 +13,14 @@ class UserMetaData(APIView):
             properties={
                 'userId': openapi.Schema(type=openapi.TYPE_STRING),
                 'trainerName': openapi.Schema(type=openapi.TYPE_STRING),
-                'joiningDate': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
+                'lastFeesDate': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
                 'renewalDate': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
                 'paymentMethod': openapi.Schema(type=openapi.TYPE_STRING),
                 'currentPlanDuration': openapi.Schema(type=openapi.TYPE_STRING),
                 'fees': openapi.Schema(type=openapi.TYPE_STRING),
                 'shift': openapi.Schema(type=openapi.TYPE_STRING),
             },
-            required=['userId','trainerName', 'currentPlan', 'joiningDate', 'renewalDate','paymentMethod', 'currentPlanDuration', 'shift']
+            required=['userId','trainerName', 'currentPlan', 'lastFeesDate', 'renewalDate','paymentMethod', 'currentPlanDuration', 'shift']
         ),
         responses={
             201: openapi.Response(
@@ -109,7 +109,7 @@ class UserMetaDataById(APIView):
             type=openapi.TYPE_OBJECT,
             properties={
                 'trainerName': openapi.Schema(type=openapi.TYPE_STRING),
-                'joiningDate': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
+                'lastFeesDate': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
                 'renewalDate': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATE),
                 'paymentMethod': openapi.Schema(type=openapi.TYPE_STRING),
                 'currentPlanDuration': openapi.Schema(type=openapi.TYPE_STRING),

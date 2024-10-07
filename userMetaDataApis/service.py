@@ -77,7 +77,7 @@ def dtoToModel(payload):
         "user_id": payload.get('userId'),
         "trainer_assigned_name": payload.get('trainerName'),
         "shift": payload.get('shift'),
-        "joining_date": payload.get('joiningDate'),
+        "last_fees_submission_date": payload.get('lastFeesDate'),
         "renewal_date": payload.get('renewalDate'),
         "current_plan_months": payload.get('currentPlanDuration'),
         "payment_method": payload.get('paymentMethod'),
@@ -92,8 +92,8 @@ def updateDtoToModel(payload):
     if payload.get('shift'):    
         response["shift"]= payload.get('shift')
 
-    if payload.get('joiningDate'):    
-        response["joining_date"]= payload.get('joiningDate')
+    if payload.get('lastFeesDate'):    
+        response["last_fees_submission_date"]= payload.get('lastFeesDate')
 
     if payload.get('renewalDate'):
         response["renewal_date"]= payload.get('renewalDate')
@@ -118,7 +118,7 @@ def modelToDto(data):
         "email": data['user_details']['email'],
         "trainerName": data.get('trainer_assigned_name'),
         "shift": data.get('shift'),
-        "joiningDate": data.get('joining_date'),
+        "lastFeesDate": data.get('last_fees_submission_date'),
         "renewalDate": data.get('renewal_date'),
         "currentPlanDuration": data.get('current_plan_months'),
         "fees": data.get('fees'),
