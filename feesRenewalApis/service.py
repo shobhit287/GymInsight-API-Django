@@ -15,7 +15,7 @@ def notifyAll(admin):
             return {"message": "No users found with upcoming renewals"}, status.HTTP_200_OK
         
         sendFeeRenewalNotification.delay(renewalUsersSerializer.data, admin)
-        return {"messgae": "Fees renewal email send shortly to the users"},  status.HTTP_200_OK
+        return {"message": "Fees renewal email send shortly to the users"},  status.HTTP_200_OK
       except UserMetaData.DoesNotExist:
            return {"error": "admin not found"}, status.HTTP_404_NOT_FOUND  
       except Exception as e:
@@ -31,13 +31,13 @@ def notifyById(admin, id):
         
         renewalDate = datetime.strptime(userMetaDataSerializer.data['renewal_date'], "%Y-%m-%d").date()
         formattedRenewalDate = renewalDate.strftime("%d %B %Y")
-        feesRenewalNotification({
+        feesRenewalNotification.delay({
             "userName": f"{userMetaDataSerializer.data['user_details']['first_name']} {userMetaDataSerializer.data['user_details']['last_name']}",
             "adminName": f"{admin['firstName']} {admin['lastName']}",
             "renewalDate": formattedRenewalDate,
             "email": userMetaDataSerializer.data['user_details']['email']
         })
-        return {"messgae": "Fees renewal email send shortly to the user"},  status.HTTP_200_OK
+        return {"message": "Fees renewal email send shortly to the user"},  status.HTTP_200_OK
       except UserMetaData.DoesNotExist:
            return {"error": "user not found"}, status.HTTP_404_NOT_FOUND  
       except Exception as e:

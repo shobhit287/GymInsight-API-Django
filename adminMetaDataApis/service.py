@@ -206,6 +206,9 @@ def modelToDto(adminMeta, adminDocument):
     if adminMeta and adminDocument :
             return {
                 "adminId" :  adminMeta.get('admin_id'),
+                "firstName": adminMeta['admin_details']['first_name'],
+                "lastName": adminMeta['admin_details']['last_name'],
+                "email": adminMeta['admin_details']['email'],
                 "gymName": adminMeta.get('gym_name'),
                 "gymAddress": adminMeta.get('gym_address'),
                 "gymCity": adminMeta.get('gym_city'),

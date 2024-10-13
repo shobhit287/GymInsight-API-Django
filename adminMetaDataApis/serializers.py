@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from . models import AdminDocumentData, AdminMetaData
+from userApis.serializers import UserSerializer
 class AdminMetaDataSerializer(serializers.ModelSerializer):
+    admin_details = UserSerializer(source='admin_id', read_only=True)
     class Meta:
         model = AdminMetaData
         fields = [
@@ -10,6 +12,7 @@ class AdminMetaDataSerializer(serializers.ModelSerializer):
                   'gym_city',
                   'gym_phone_no',
                   'default_users_password',
+                  'admin_details',
                   'gym_gst_no',
                   'created_at',
                   'updated_at'

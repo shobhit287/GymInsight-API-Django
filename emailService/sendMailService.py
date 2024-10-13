@@ -68,7 +68,7 @@ def documentRejectedNotification(data):
     if response['status']:
         print(f"Rejected Notification successfully send to super admin")
 
-
+@shared_task
 def feesRenewalNotification(data): 
     data["subject"] = 'Gym Insight - Gym Fees Renewal'
     response = sendEmailNotification(data, emailTemplateConfigs['FEES_RENEWAL'])
