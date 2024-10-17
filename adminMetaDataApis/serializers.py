@@ -42,6 +42,7 @@ class AdminMetaDataSerializer(serializers.ModelSerializer):
             instance.gym_city = validated_data.get('gym_city', instance.gym_city)
             instance.gym_phone_no = validated_data.get('gym_phone_no', instance.gym_phone_no)
             instance.gym_gst_no = validated_data.get('gym_gst_no', instance.gym_gst_no)
+            instance.default_users_password = validated_data.get('default_users_password', instance.default_users_password)
             instance.save()
             return instance
         

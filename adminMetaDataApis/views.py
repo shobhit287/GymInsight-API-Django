@@ -145,8 +145,8 @@ class AdminMetaDataById(APIView):
                 if not isFound:
                     return JsonResponse({"error":"admin doc not found"}, status = status.HTTP_404_NOT_FOUND)
                 
-                elif adminDocument['status'] == "PENDING":
-                    return JsonResponse({"error":"You cannot update your details as the document status is in 'Pending' state"}, status = status.HTTP_400_BAD_REQUEST)
+                # elif adminDocument['status'] == "PENDING":
+                #     return JsonResponse({"error":"You cannot update your details as the document status is in 'Pending' state"}, status = status.HTTP_400_BAD_REQUEST)
 
                 upload,code = updateMetaFiles({
                     'gym_logo': payload.get('gymLogo'),

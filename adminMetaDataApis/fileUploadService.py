@@ -24,7 +24,7 @@ def updateMetaFiles(files):
   try:
    filterUpdateFiles = {}
    for updateFile in files:
-     if files[updateFile] is not None:
+     if files[updateFile] is not None and files[updateFile] != 'null' and files[updateFile] != 'undefined':
        filterUpdateFiles[updateFile] = files[updateFile]
    
    if not  filterUpdateFiles :

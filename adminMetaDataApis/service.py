@@ -94,11 +94,10 @@ def update(id, payload, upload):
             updateDocumentSerializer.save()
             user = findOne(id)
             superAdmin= findOneByRole("SUPER_ADMIN")
-            print(user, superAdmin)
             updatedDocumentApprovalRejectNotification.delay({
                 "userName": f"{user['user']['first_name']} {user['user']['last_name']}",
                 "email": superAdmin['user']['email'],
-                "id": payload.get('adminId')
+                "id": id
             })
             return {"message": "Admin data Updated successfully"}, status.HTTP_200_OK
         else:
@@ -259,6 +258,8 @@ def updateDtoToModel(payload, upload):
         metaData['gym_phone_no'] = payload.get('gymPhoneNo')
     if payload.get('gymGstNo') is not None:
         metaData['gym_gst_no'] = payload.get('gymGstNo')
+    if payload.get('defaultUserPassword') is not None:
+        metaData['default_users_password'] = payload.get('defaultUserPassword')
 
     # Update documentData fields only if they are present in the upload dictionary
     if upload.get('gym_certificate') is not None:

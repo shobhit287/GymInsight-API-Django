@@ -58,7 +58,7 @@ def documentApprovalNotification(data):
     data['subject'] = 'Gym Insight - Gym Details Approved'
     response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_APPROVAL'])
     if response['status']:
-        print(f"updated gym details successfully send to super admin")
+        print(f"Approval Notification successfully send to admin")
 
 @shared_task
 def documentRejectedNotification(data):
@@ -66,7 +66,7 @@ def documentRejectedNotification(data):
     data["subject"] = 'Gym Insight - Gym Details Rejected'
     response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_REJECTED'])
     if response['status']:
-        print(f"Rejected Notification successfully send to super admin")
+        print(f"Rejected Notification successfully send to admin")
 
 @shared_task
 def feesRenewalNotification(data): 
