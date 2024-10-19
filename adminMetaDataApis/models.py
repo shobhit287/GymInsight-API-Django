@@ -1,11 +1,9 @@
 from django.db import models
 from userApis.models import User
-import uuid
 from . statusEnum import status
 
 class AdminMetaData(models.Model):
-     admin_meta_data_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-     admin_id = models.OneToOneField(User, on_delete=models.CASCADE, to_field='user_id', db_column='admin_id', unique= True)
+     admin_id = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE, to_field='user_id', db_column='admin_id', unique= True)
      gym_name = models.TextField()
      gym_address = models.TextField()
      gym_city = models.CharField(max_length=50)
@@ -18,8 +16,7 @@ class AdminMetaData(models.Model):
           return self.gym_name
 
 class AdminDocumentData(models.Model):
-     document_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-     admin_id = models.OneToOneField(User, on_delete=models.CASCADE, to_field='user_id', db_column='admin_id')
+     admin_id = models.OneToOneField(User,primary_key=True, on_delete=models.CASCADE, to_field='user_id', db_column='admin_id', unique= True)
      gym_certificate_storage_path = models.TextField(null= True)
      gym_logo_storage_path = models.TextField(null = True)
      gym_license_storage_path = models.TextField(null = True)

@@ -72,7 +72,7 @@ def getById(id):
     except AdminMetaData.DoesNotExist:
         return {"error": "Admin not found"}, status.HTTP_404_NOT_FOUND
     except Exception as e:
-        return {"error": "An unexpected error occur"}, status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {"error": "An unexpected error occur","error":e}, status.HTTP_500_INTERNAL_SERVER_ERROR
 
 def update(id, payload, upload):
     try:
@@ -213,6 +213,7 @@ def modelToDto(adminMeta, adminDocument):
                 "gymCity": adminMeta.get('gym_city'),
                 "gymPhoneNo": adminMeta.get('gym_phone_no'),
                 "gymGstNo": adminMeta.get('gym_gst_no'),
+                "totalUsers": len(adminMeta.get('users_meta_data')),
                 "defaultUserPassword": adminMeta.get('default_users_password'),
                 "documentData":{
                     "documentId": adminDocument.get('document_id'),

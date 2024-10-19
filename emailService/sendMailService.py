@@ -38,7 +38,7 @@ def sendUserCreateNotification(data):
 
 @shared_task
 def documentApprovalRejectNotification(data):
-    data['link'] = f"{os.getenv('BASE_URL')}/gym-details/?adminId={data['id']}"
+    data['link'] = f"{os.getenv('BASE_URL')}/gym-owners?adminId={data['id']}"
     data['subject'] = 'Gym Insight - Gym Details Verification'
     response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_APPROVAL_REJECT'])
     if response['status']:
@@ -46,7 +46,7 @@ def documentApprovalRejectNotification(data):
 
 @shared_task
 def updatedDocumentApprovalRejectNotification(data):
-    data['link'] = f"{os.getenv('BASE_URL')}/gym-details/?adminId={data['id']}"
+    data['link'] = f"{os.getenv('BASE_URL')}/gym-owners?adminId={data['id']}"
     data['subject'] = 'Gym Insight - Updated Gym Details Verification'
     response = sendEmailNotification(data, emailTemplateConfigs['UPDATED_DOCUMENT_APPROVAL_REJECT'])
     if response['status']:
@@ -54,7 +54,7 @@ def updatedDocumentApprovalRejectNotification(data):
 
 @shared_task
 def documentApprovalNotification(data):
-    data['link'] = f"{os.getenv('BASE_URL')}/dashboard"
+    data['link'] = f"{os.getenv('BASE_URL')}/gym-members"
     data['subject'] = 'Gym Insight - Gym Details Approved'
     response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_APPROVAL'])
     if response['status']:
@@ -62,7 +62,7 @@ def documentApprovalNotification(data):
 
 @shared_task
 def documentRejectedNotification(data):
-    data["link"] = f"{os.getenv('BASE_URL')}/gym-details/edit"
+    data["link"] = f"{os.getenv('BASE_URL')}/dashboard?adminId={data['id']}"
     data["subject"] = 'Gym Insight - Gym Details Rejected'
     response = sendEmailNotification(data, emailTemplateConfigs['DOCUMENT_REJECTED'])
     if response['status']:

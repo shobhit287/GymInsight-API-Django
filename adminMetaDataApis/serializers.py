@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from . models import AdminDocumentData, AdminMetaData
 from userApis.serializers import UserSerializer
+from userMetaDataApis.serializers import UserMetaDataSerializer
 class AdminMetaDataSerializer(serializers.ModelSerializer):
     admin_details = UserSerializer(source='admin_id', read_only=True)
+    users_meta_data = UserMetaDataSerializer(source= 'users_metadata',many= True, read_only= True)
     class Meta:
         model = AdminMetaData
         fields = [
@@ -13,12 +15,12 @@ class AdminMetaDataSerializer(serializers.ModelSerializer):
                   'gym_phone_no',
                   'default_users_password',
                   'admin_details',
+                  'users_meta_data',
                   'gym_gst_no',
                   'created_at',
                   'updated_at'
                 ]
         extra_kwargs = {
-            'admin_meta_data_id': {'read_only': True},
             'created_at': {'read_only': True},
             'updated_at': {'read_only': True}, 
         }
@@ -50,7 +52,6 @@ class AdminDocumentDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdminDocumentData
         fields = [
-                  'document_id',
                   'admin_id',
                   'gym_certificate_storage_path',
                   'gym_logo_storage_path',
@@ -62,7 +63,6 @@ class AdminDocumentDataSerializer(serializers.ModelSerializer):
                   'updated_at'
                 ]
         extra_kwargs = {
-            'document_id': {'read_only': True},
             'created_at': {'read_only': True},
             'updated_at': {'read_only': True}, 
         }
