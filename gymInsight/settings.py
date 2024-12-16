@@ -28,7 +28,7 @@ BASE_URL = os.getenv("BASE_URL")
 GOOGLE_AUTH_CLIENT_ID = os.getenv("GOOGLE_AUTH_CLIENT_ID")
 DEBUG = True
 
-ALLOWED_HOSTS = ['shobhitsharma287.pythonanywhere.com', 'localhost']
+ALLOWED_HOSTS = [os.getenv("CLIENT_DOMAIN"), 'localhost']
 
 
 # Application definition
@@ -65,7 +65,7 @@ ROOT_URLCONF = 'gymInsight.urls'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    os.getenv("CLIENT_URL"),
+    os.getenv("CLIENT_DOMAIN"),
 ]
 
 TEMPLATES = [
