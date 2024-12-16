@@ -20,7 +20,7 @@ class UserMetaData(APIView):
                 'fees': openapi.Schema(type=openapi.TYPE_STRING),
                 'shift': openapi.Schema(type=openapi.TYPE_STRING),
             },
-            required=['userId','trainerName', 'currentPlan', 'lastFeesDate', 'renewalDate','paymentMethod', 'currentPlanDuration', 'shift']
+            required=['userId', 'trainerName', 'lastFeesDate', 'renewalDate','paymentMethod', 'currentPlanDuration', 'shift']
         ),
         responses={
             201: openapi.Response(
@@ -173,3 +173,35 @@ class UserMetaDataById(APIView):
         else:
             return JsonResponse(validate, status= validate['code'])     
 
+class RequestPlan(APIView):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'currentWeight': openapi.Schema(type=openapi.TYPE_STRING),
+                'goalWeight': openapi.Schema(type=openapi.TYPE_STRING),
+                'height': openapi.Schema(type=openapi.TYPE_STRING),
+                'isDiet': openapi.Schema(type=openapi.TYPE_BOOLEAN),
+                'isExerciseSchedule': openapi.Schema(type=openapi.TYPE_BOOLEAN),
+            },
+            required=['currentWeight','goalWeight', 'height', 'isDiet', 'isExerciseSchedule']
+        ),
+        responses={
+            200: openapi.Response(description="Admin Notified Successfully"),
+            400: openapi.Response(description="Bad request"),
+            403: openapi.Response(description="Forbidden: You don't have access to perform this action."),
+            404: openapi.Response(description="User meta data not found"),
+            500: openapi.Response(description="Internal Server Error"),
+        }
+    )
+    def post(self, request):
+        # Your logic to handle the POST request
+        validate = validateJwt(request.headers.get('Authorization'))
+        if validate['status']:
+            if validate['user']['role'] == "USER":
+                response, statusCode = service.requestPlan(validate['user'], request.data)
+                return JsonResponse(response, status=statusCode)
+            else:
+                return JsonResponse({"error":"You don't have access to perform this action"}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            return JsonResponse(validate, status=validate['code'])

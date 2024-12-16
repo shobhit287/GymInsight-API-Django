@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Insight - Schedule/Diet Request</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .important {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gym Schedule/Diet Request Notification</h1>
+
+    <p>Dear {{adminName}},</p>
+    
+    <p>This is to inform you that <span class="important">{{userName}}</span> has submitted a request for a gym schedule and/or diet plan.</p>
+    
+    <p>The following details have been provided by the user:</p>
+    <ul>
+        <li><strong>Member Name:</strong> {{userName}}</li>
+        <li><strong>Current Weight (KG):</strong> {{currentWeight}}</li>
+        <li><strong>Goal Weight (KG):</strong> {{goalWeight}}</li>
+        <li><strong>Height (cm):</strong> {{height}}</li>
+        <li><strong>Diet Plan Requested:</strong> {% if isDiet %} Yes {% else %} No {% endif %}</li>
+        <li><strong>Exercise Schedule Requested:</strong> {% if isExerciseSchedule %} Yes {% else %} No {% endif %}</li>
+    </ul>
+
+    <p>We kindly ask you to review the request and prepare the appropriate plan for the member.</p>
+    
+    <p>Thank you for your attention to this request!</p>
+
+    <p>Best Regards, <br> Gym Insight Team</p>
+</body>
+</html>

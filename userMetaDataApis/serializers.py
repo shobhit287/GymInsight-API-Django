@@ -3,10 +3,10 @@ from . models import UserMetaData
 from userApis.serializers import UserSerializer
 
 class UserMetaDataSerializer(serializers.ModelSerializer):
-    user_details = UserSerializer(source='user_id', read_only=True)
+    user_details = UserSerializer(source='user_id', read_only=True)    
     class Meta:
         model = UserMetaData
-        fields = ['user_meta_data_id', 'user_id', 'admin_id', 'trainer_assigned_name', 'shift', 'last_fees_submission_date', 'renewal_date', 'current_plan_months', 'payment_method', 'fees','user_details', 'created_at', 'updated_at']
+        fields = ['user_meta_data_id', 'user_id', 'admin_id', 'trainer_assigned_name', 'shift', 'last_fees_submission_date', 'renewal_date', 'current_plan_months', 'payment_method', 'fees', 'user_details', 'created_at', 'updated_at']
         extra_kwargs = {
             'user_meta_data_id': {'read_only': True},
             'created_at': {'read_only': True},

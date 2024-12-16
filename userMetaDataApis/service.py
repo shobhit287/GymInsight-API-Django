@@ -1,7 +1,9 @@
 from rest_framework import status
 from .models import UserMetaData
 from . serializers import UserMetaDataSerializer
+from userApis.serializers import UserSerializer
 from userApis.models import User
+from emailService import sendMailService
 def create(payload, admin):
     if not payload: 
         return {"error":"Data is missing"}, status.HTTP_400_BAD_REQUEST
@@ -71,6 +73,33 @@ def delete(admin,id):
         return {"error": "user meta data or user not found"}, status.HTTP_404_NOT_FOUND
     except Exception as e:
         return {"error":"An unexpected error occured"}, status.HTTP_500_INTERNAL_SERVER_ERROR
+
+
+def requestPlan(user, data):
+    try:
+        user_obj = UserMetaData.objects.get(user_id=user["userId"])
+        userDetails = UserMetaDataSerializer(user_obj)
+        admin_obj = User.objects.get(user_id= userDetails.data['admin_id'])
+        adminDetails = UserSerializer(admin_obj)
+        sendMailService.requestPlan.delay({
+            "userName": f"{user['firstName']} {user['lastName']}",
+            "adminName":f"{adminDetails.data['first_name']} {adminDetails.data['last_name']}",
+            "email": adminDetails.data["email"],
+            "currentWeight": data['currentWeight'],
+            "goalWeight": data['goalWeight'],
+            "height": data.get("height"),
+            "isExerciseSchedule": data.get('isExerciseSchedule'),
+            "isDiet": data["isDiet"]
+        })
+
+        return {"message": "Details sent to your gym owner. You will receive a response via email soon."}, status.HTTP_200_OK
+        
+    except UserMetaData.DoesNotExist:
+        return {"error": "User not found"}, status.HTTP_404_NOT_FOUND
+    except Exception as e:
+        return {"error": "An unexpected error occurred"}, status.HTTP_500_INTERNAL_SERVER_ERROR
+
+         
     
 def dtoToModel(payload):
     return {

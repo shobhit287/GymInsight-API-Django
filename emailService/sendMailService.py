@@ -22,7 +22,7 @@ def passwordResetSendNotification(data):
 
 @shared_task   
 def sendAdminUserCreateNotification(data):
-    data["link"] = f"{os.getenv('BASE_URL')}/login"
+    data["link"] = f"{os.getenv('BASE_URL')}/gym-members"
     data["subject"] = 'Welcome to Gym Insight!'
     response = sendEmailNotification(data, emailTemplateConfigs['ADMIN_CREDENTIALS_TEMPLATE'])
     if response['status']:
@@ -74,6 +74,13 @@ def feesRenewalNotification(data):
     response = sendEmailNotification(data, emailTemplateConfigs['FEES_RENEWAL'])
     if response['status']:
         print(f"Fees Renewal Notification successfully send to {data['email']}")       
+
+@shared_task
+def requestPlan(data): 
+    data["subject"] = 'Gym Insight - Schedule/Diet Request'
+    response = sendEmailNotification(data, emailTemplateConfigs['REQUEST_PLAN'])
+    if response['status']:
+        print(f"Request Renewal Notification successfully send to {data['email']}")       
 
     
  

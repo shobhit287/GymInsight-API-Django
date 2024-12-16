@@ -10,4 +10,5 @@ emailTemplateConfigs = {
     "DOCUMENT_APPROVAL": os.path.join(settings.BASE_DIR, "emailService", "templates", "document-approve.html"),
     "DOCUMENT_REJECTED": os.path.join(settings.BASE_DIR, "emailService", "templates", "document-reject.html"),
     "FEES_RENEWAL": os.path.join(settings.BASE_DIR, "emailService", "templates", "fees-renewal.html"),
+    "REQUEST_PLAN": os.path.join(settings.BASE_DIR, "emailService", "templates", "request-plan.html"),
 }
