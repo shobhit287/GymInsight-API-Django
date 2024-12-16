@@ -28,7 +28,7 @@ BASE_URL = os.getenv("BASE_URL")
 GOOGLE_AUTH_CLIENT_ID = os.getenv("GOOGLE_AUTH_CLIENT_ID")
 DEBUG = True
 
-ALLOWED_HOSTS = [os.getenv("CLIENT_DOMAIN"), 'localhost']
+ALLOWED_HOSTS = [os.getenv("BACKEND_DOMAIN"), 'localhost']
 
 
 # Application definition
