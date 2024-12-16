@@ -63,10 +63,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'gymInsight.urls'
 
-CORS_ALLOWED_ORIGINS = [
-    os.getenv("CLIENT_DOMAIN"),
-    "http://localhost:3000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     os.getenv("CLIENT_DOMAIN"),
+#     "http://localhost:3000",
+# ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
     {
