@@ -65,7 +65,7 @@ ROOT_URLCONF = 'gymInsight.urls'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    os.getenv("CLIENT_DOMAIN"),
+    "https://gyminsight-portal-react.onrender.com"
 ]
 
 TEMPLATES = [
