@@ -63,6 +63,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'gymInsight.urls'
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    os.getenv("CLIENT_URL"),
+]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
