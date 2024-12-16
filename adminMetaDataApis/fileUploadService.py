@@ -4,8 +4,8 @@ from fileUpload.uploadFile import uploadFileToDrive
 def uploadMetaFiles(files):
   try:
    for file in files:
-      if files[file] is None:
-         return {"error":f"{file}  is required field", "status":False}, 400
+      if files[file] is None or files[file] == '':
+         return {"error":f"{file} is required field", "status":False}, 400
       if files[file].content_type not in allowedTypes:
          return {"error":f"Invalid file type for {file}", "status":False}, 400
    docUrls={}   
