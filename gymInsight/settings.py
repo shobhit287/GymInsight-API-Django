@@ -28,7 +28,7 @@ BASE_URL = os.getenv("BASE_URL")
 GOOGLE_AUTH_CLIENT_ID = os.getenv("GOOGLE_AUTH_CLIENT_ID")
 DEBUG = True
 
-ALLOWED_HOSTS = ['gyminsight-api-django.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['shobhitsharma287.pythonanywhere.com', 'localhost']
 
 
 # Application definition
