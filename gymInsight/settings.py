@@ -63,10 +63,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'gymInsight.urls'
 
-# CORS_ALLOWED_ORIGINS = [
-#     os.getenv("CLIENT_DOMAIN"),
-#     "http://localhost:3000",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    os.getenv("CLIENT_DOMAIN"),
+    "http://localhost:3000",
+]
 CORS_ALLOW_ALL_ORIGINS = True
 
 TEMPLATES = [
@@ -179,9 +179,5 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  
 DEFAULT_FROM_EMAIL = 'Gym Insight <noreply@gmail.com>'
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0' 
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  
-]
+CELERY_BROKER_URL = os.getenv('CELERY_URL')  
+CELERY_RESULT_BACKEND = os.getenv('CELERY_URL') 
