@@ -15,6 +15,7 @@ CREDS_FILE = json.loads(os.getenv('DRIVE_CLIENT_CREDENTIAL'))
 
 def uploadFileToDrive(file_name, document_type, file):
     # Authenticate using service account credentials
+    print(CREDS_FILE)
     creds = Credentials.from_service_account_file(CREDS_FILE, scopes=SCOPES)
     service = build('drive', 'v3', credentials=creds)
     subfolder_name = ''
