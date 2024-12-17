@@ -2,6 +2,7 @@ from . allowedMime import allowedTypes
 import random, time
 from fileUpload.uploadFile import uploadFileToDrive
 def uploadMetaFiles(files):
+  print(files)
   try:
    for file in files:
       if files[file] is None or files[file] == '':
@@ -17,7 +18,7 @@ def uploadMetaFiles(files):
    return docUrls, 201  
        
   except Exception as e:
-    return {"error":"An error occurd while uploading file"}, 500   
+    return {"error":"An error occurd while uploading file", "msg": e}, 500   
 
 
 def updateMetaFiles(files):
