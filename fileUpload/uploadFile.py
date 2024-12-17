@@ -1,4 +1,5 @@
 import os
+import json
 from google.oauth2.service_account import Credentials
 from . getSubFolderId import createGetSubfolder
 from googleapiclient.discovery import build
@@ -9,7 +10,8 @@ import os
 from django.conf import settings
 load_dotenv()
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
-CREDS_FILE = os.path.join(settings.BASE_DIR, "fileUpload","client-credentials.json")
+CREDS_FILE = json.loads(os.getenv('DRIVE_CLIENT_CREDENTIAL'))
+
 
 def uploadFileToDrive(file_name, document_type, file):
     # Authenticate using service account credentials

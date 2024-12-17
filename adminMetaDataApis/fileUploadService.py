@@ -18,7 +18,7 @@ def uploadMetaFiles(files):
    return docUrls, 201  
        
   except Exception as e:
-    return {"error":"An error occurd while uploading file", "msg": e}, 500   
+    return {"error":"An error occurd while uploading file"}, 500   
 
 
 def updateMetaFiles(files):
